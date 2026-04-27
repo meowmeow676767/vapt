@@ -38,8 +38,8 @@ theHarvester -d vulnweb.com -l 50 -b duckduckgo
 # EXP 5 — Google Dorking (type these in browser, not terminal)
 # ============================================================
 # site:testphp.vulnweb.com
-# site:testphp.vulnweb.com ext:doc
-# site:testphp.vulnweb.com ext:sql
+# site:mu.ac.in ext:doc
+# site:github.com ext:sql
 # site:testphp.vulnweb.com inurl:admin
 # site:testphp.vulnweb.com intitle:"index of"
 
